@@ -1,0 +1,124 @@
+<html>
+<head>
+<title>Geodan startpagina - edit</title>
+<script type="text/javascript" src="start.js"></script>
+<script type="text/javascript" src="tegel.js"></script>
+<link rel="stylesheet" type="text/css" href="start.css">
+<style>
+#json{width:100%;height:400px;opacity:0.9}
+#jsontheme{width:100%;height:60;opacity:0.9}
+</style>
+<script>
+
+var resetTegel=""
+
+function loadCookie(){
+	var mytegel_string = getCookie("GeodanTegels")
+	resetTegel = mytegel_string
+
+	if (!mytegel_string){
+		//alert("Load default")
+		mytegel_string= JSON.stringify(tegel)
+	}
+	mytegel_string=mytegel_string.replace(/\{/g,"\n{")
+	mytegel_string=mytegel_string.replace(/\[/g,"\n[")
+	mytegel_string=mytegel_string.replace(/\]/g,"\n]")
+	mytegel_string=mytegel_string.replace(/\,/g,",\n")
+	id('json').value=mytegel_string
+}
+function saveJson(toStart){
+	var mytegel_string = id('json').value
+	mytegel_string=mytegel_string.replace(/\n/g,"")
+	if (IsJsonString(mytegel_string)){
+		setCookie("GeodanTegels",mytegel_string,100)
+		resetTegel = mytegel_string
+		if (toStart){document.location.href='index.htm'}
+	}else{
+		alert("Not a valid JSON!")
+	}
+}
+function stripJson(){
+	var mytegel_string = id('json').value
+	mytegel_string=mytegel_string.replace(/\n/g,"")
+	id('json').value=mytegel_string
+}
+function resetJson(toDefeault){
+	if (toDefeault){
+		if (window.confirm("All custom settings will be lost!! Do you want this?")){
+			setCookie("GeodanTegels",JSON.stringify(tegel),100)
+			loadCookie()
+		}
+	}else{
+		setCookie("GeodanTegels",resetTegel,100)
+		loadCookie()
+	}
+}
+function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+function loadTheme(){
+	var myTheme_string = getCookie("GeodanTheme")
+
+	if (!myTheme_string){
+		alert("Load theme default")
+		myTheme_string= JSON.stringify(theme)
+	}
+	myTheme_string=myTheme_string.replace(/\{/g,"\n{")
+	myTheme_string=myTheme_string.replace(/\[/g,"\n[")
+	myTheme_string=myTheme_string.replace(/\]/g,"\n]")
+	myTheme_string=myTheme_string.replace(/\,/g,",\n")
+	id('jsontheme').value=myTheme_string
+}
+function saveJsontheme(toStart){
+	var mytheme_string = id('jsontheme').value
+	mytheme_string=mytheme_string.replace(/\n/g,"")
+	if (IsJsonString(mytheme_string)){
+		setCookie("GeodanTheme",mytheme_string,100)
+		theme = JSON.parse(mytheme_string)
+		themeDraw()
+		if (toStart){document.location.href='index.htm'}
+	}else{
+		alert("Not a valid JSON!")
+	}
+}
+
+function resetTheme(nr){
+	var newtheme=defaulttheme
+		if (nr){
+			if (nr==1){newtheme={tegelcolor:"black",bgimage:"image/mountain.jpg"}}
+			if (nr==2){newtheme={tegelcolor:"lightblue",bgimage:"image/water.jpg"}}
+			if (nr==3){newtheme={tegelcolor:"white",bgimage:"image/	grey.jpg"}}
+		}else{
+		}
+		setCookie("GeodanTheme",JSON.stringify(newtheme),100)
+		themeDraw()
+		loadTheme()
+}
+</script>
+</head>
+<body onload="loadCookie();loadTheme();themeDraw()">
+<img onclick="document.location.href='index.htm'" id='switch' width=30px height=40px src='image/menu.png'>
+<hr>
+<h3>Thema...</h3>
+<textarea id='jsontheme'></textarea><br>
+<input type=button value='Save and check JSON' onclick='saveJsontheme()'>
+<input type=button value='Meadow theme' onclick='resetTheme()'>
+<input type=button value='Mountain theme' onclick='resetTheme(1)'>
+<input type=button value='Water theme' onclick='resetTheme(2)'>
+<input type=button value='Grey' onclick='resetTheme(3)'>
+<hr>
+<h3>Tegels...</h3>
+<textarea id='json'></textarea>
+<input type=button value='Save and check JSON' onclick='saveJson()'>
+<input type=button value='Save and go back to startpage' onclick='saveJson(true)'>
+<input type=button value='Reset to last valid JSON' onclick='resetJson()'>
+<input type=button value='Reset to default' onclick='resetJson(true)'>
+<input type=button value='Strip JSON' onclick='stripJson()'>
+<hr>
+</body>
+</html>

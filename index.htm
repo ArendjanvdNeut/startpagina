@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>Geodan startpagina</title>
+<script type="text/javascript" src="start.js"></script>
+<script type="text/javascript" src="tegel.js"></script>
+<link rel="stylesheet" type="text/css" href="start.css">
+</head>
+<body onload="tegelsleggen();themeDraw()">
+<img onclick="document.location.href='edit.htm'" id='switch' width=30px height=40px src='image\menu.png'>
+<!--<input type=button value=reset onclick="resettegel()">-->
+<center>
+<a href='http://www.geodan.nl'><img border=0 width=200px id=logo src=image\geodan.png></a><br>
+<input id=search type=text placeholder='zoek' onkeyup="search(event)">
+<br>
+<input class=content type=radio name=content onclick="search()" checked value='https://www.google.nl/webhp?sourceid=chrome-instant&ion=1&espv=2&ie=UTF-8#q='>Google
+<input class=content type=radio name=content onclick="search()" value='https://drive.google.com/drive/u/0/search?q='>Drive
+<input class=content type=radio name=content onclick="search()" value='http://search.geodan.nl/#/q='>Search
+<input class=content type=radio name=content onclick="search()" value='https://felix.geodan.nl/search/node/'>Felix
+<input class=content type=radio name=content onclick="search()" value='http://lingis.geodan.nl/wiki/index.php?search='>Wiki
+<input class=content type=radio name=content onclick="search()" value='https://mail.google.com/mail/u/0/#search/'>Mail
+<input class=content type=radio name=content onclick="search()" value='http://maps.google.nl?q='>Maps
+<input class=content type=radio name=content onclick="search()" value='http://kaart.geodan.nl/zoek/adres.html?q='>Postcode
+</center>
+<br><br>
+<div id="tegels"></div>
+</body>
+</html>
